@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<input id="inpVar" type="text" placeholder="Søkeemne">
+<form id="frmSokeemne">
+    <input type="radio" name="sokeemne" value="Etternavn" checked><label>Etternavn</label>
+    <input type="radio" name="sokeemne" value="Fornavn"><label>Fornavn</label>
+    <input type="radio" name="sokeemne" value="Adresse"><label>Adresse</label>
+    <input type="radio" name="sokeemne" value="Telefonnummer"><label>Telefonnummer</label>
+    <input type="radio" name="sokeemne" value="Epost"><label>Epost</label>
+</form>
+<input id="inpBtn" type="button" value="Go!"> <br>
+<textarea id="txtArea" cols="20" rows="10"></textarea>
+
+<script>
+
+    var inpVar = document.getElementById("inpVar");
+    var frmSokeemne = document.getElementById("frmSokeemne");
+    var inpBtn = document.getElementById("inpBtn");
+    var txtArea = document.getElementById("txtArea");
+
+    var navnArray = new Array();
+
+    navnArray[0] = ["Navnesen","Navn", "Engate 1",11111111,"navn@navnesen.no"]; //Etternavn, Fornavn, Adresse, telefonnummer, epost
+    navnArray[1] = ["Pedersen","Peder","Togate 2",22222222,"peder@pedersen.no"];
+    navnArray[2] = ["Ravnevand", "Maia", "Tregate 3",33333333,"maia@ravnevand.no"];
+    navnArray[3] = ["Larsen","Erlend", "Firegate 4",44444444,"erlend@larsen.no"];
+    navnArray[4] = ["Larsen","NOEN", "Firegate 5",44444444,"erlend@larsen.no"];
+
+    inpBtn.onclick = function () {
+        txtArea.innerHTML="";
+        searchArray(checkFrmChecked(frmSokeemne));
+    }
+
+    function checkFrmChecked(frm) {
+        for (var i = 0 ; i<frm.length ; i++) {
+            if (frm[i].checked==true) {
+                return i;
+            }
+        }
+    }
+
+function searchArray(searchArrayNumber) {
+    for (var i = 0 ; i<navnArray.length ; i++) {
+
+        lowInp = inpVar.value.toLowerCase();
+        lowArray = navnArray[i][searchArrayNumber].toLowerCase();
+
+        if (searchArrayNumber==2) { //Refererer til adresse, fjerner hensyn til tall i adressen...
+            indexInp = lowInp.indexOf(" "); //Finner index til " "
+            if (indexInp<0) { //Hvis det ikke er mellomrom, altså ikke husnummer, fjerner den hensyn til husnummer i array.
+                indexArray = lowArray.indexOf(" ");
+                if (indexArray>-1) {
+                    lowArray = lowArray.slice(0, indexArray);
+            }
+            }
+        }
+
+        if (lowInp==lowArray) {
+            txtArea.innerHTML+=navnArray[i][1]+" "+navnArray[i][0]+",\nAdr: "+navnArray[i][2]+"\nTlf: "+navnArray[i][3]+"\nEpost: "+navnArray[i][4]+ "\n"+"\n";
+        }
+
+    }
+}
+
+</script>
+</body>
+</html>
